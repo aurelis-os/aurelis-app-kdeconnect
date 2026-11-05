@@ -6,8 +6,8 @@ ARCH=$(uname -m)
 VERSION=$(pacman -Q kdeconnect | awk '{print $2; exit}') # example command to get version of application here
 export ARCH VERSION
 export OUTPATH=./dist
-export ADD_HOOKS="self-updater.hook"
-export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
+# export ADD_HOOKS="self-updater.hook"
+# export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
 export DESKTOP=/usr/share/applications/org.kde.kdeconnect.app.desktop
 export ICON=/usr/share/icons/hicolor/scalable/apps/kdeconnect.svg
 export USE_HOST_DRIVERS_EXPERIMENTAL=1
@@ -35,7 +35,9 @@ quick-sharun \
 # Additional changes can be done in between here
 
 # Turn AppDir into AppImage
-quick-sharun --make-appimage
+GITHUB_REPOSITORY= quick-sharun --make-appimage
+rm -f ./dist/*.zsync
+sh ./pkg-meta.sh
 
 # Test the app for 12 seconds, if the app normally quits before that time
 # then skip this or check if some flag can be passed that makes it stay open
